@@ -12,7 +12,7 @@ class SpeechEngine:
 
         self.voices = self.engine.getProperty('voices')
         self.engine.setProperty('voice', self.voices[0].id)
-        self.engine.setProperty('rate', 210)
+        self.engine.setProperty('rate', 100) #change depending on computer speed
 
     def talk(self, text):
         self.engine.say(text)
