@@ -1,6 +1,7 @@
 import pyttsx3 as tts
 import speech_recognition as sr
 import json
+import asyncio
 
 
 class SpeechEngine:
@@ -13,20 +14,23 @@ class SpeechEngine:
         self.voices = self.engine.getProperty('voices')
         self.engine.setProperty('voice', self.voices[0].id)
         self.engine.setProperty('rate', 100) #change depending on computer speed
+    
+        self.identifier = "chatbot"
 
     def talk(self, text):
         self.engine.say(text)
         self.engine.runAndWait()
 
-    def get_command(self):
+    def get_command(self, conversation=False):
         with self.microphone as source:
             self.listener.adjust_for_ambient_noise(source,duration=1)
-            print('listening...')
+            # print('listening...')
             user_input = self.listener.listen(source)                # get user input (voice)
             voice = self.listener.recognize_google(user_input, language="en")
             voice = json.dumps(voice, ensure_ascii=False).encode('utf8').decode("ascii")# uses Google API
             voice = voice.lower()                               # makes sure input string is lowercase
-
+        if self.identifier not in voice and not conversation:
+            return self.get_command()
         return voice
         # print(voice)
         # if "hey engine" in voice:
