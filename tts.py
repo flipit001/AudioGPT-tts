@@ -1,7 +1,7 @@
 import pyttsx3 as tts
 import speech_recognition as sr
 import json
-import asyncio
+# import asyncio
 
 
 class SpeechEngine:
