@@ -6,7 +6,7 @@ from exceptions import UnsupportedLanguage
 
 
 class SpeechEngine:
-    def __init__(self, language="en"):
+    def __init__(self, language="english"):
         self.listener = sr.Recognizer()
         self.microphone = sr.Microphone()
         self.language = language
