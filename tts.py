@@ -1,18 +1,24 @@
 import pyttsx3 as tts
 import speech_recognition as sr
 import json
+from exceptions import UnsupportedLanguage
 # import asyncio
 
 
 class SpeechEngine:
-    def __init__(self):
+    def __init__(self, language="en"):
         self.listener = sr.Recognizer()
         self.microphone = sr.Microphone()
+        self.language = language
         # initialize engine
         self.engine = tts.init()
 
         self.voices = self.engine.getProperty('voices')
-        self.engine.setProperty('voice', self.voices[0].id)
+        voice_pronounciation = [voice.id for voice in self.voices if self.language == voice.id]
+        print(voice_pronounciation)
+        if not voice_pronounciation:
+            raise UnsupportedLanguage(f"Sorry your language '{self.language}' can not be spoken by the computer")
+        self.engine.setProperty('voice', voice_pronounciation[0])
         self.engine.setProperty('rate', 100) #change depending on computer speed
     
         self.identifier = "chatbot"
@@ -26,8 +32,9 @@ class SpeechEngine:
             self.listener.adjust_for_ambient_noise(source,duration=1)
             # print('listening...')
             user_input = self.listener.listen(source)                # get user input (voice)
-            voice = self.listener.recognize_google(user_input, language="en")
-            voice = json.dumps(voice, ensure_ascii=False).encode('utf8').decode("ascii")# uses Google API
+            voice = self.listener.recognize_google(user_input, language=self.language)
+            print(voice)
+            voice = json.dumps(voice, ensure_ascii=False).encode('utf8').decode("ascii")
             voice = voice.lower()                               # makes sure input string is lowercase
         if self.identifier not in voice and not conversation:
             return self.get_command()

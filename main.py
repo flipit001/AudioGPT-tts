@@ -2,7 +2,8 @@ import tts
 import gpt
 
 if __name__ == "__main__":
-    engine = tts.SpeechEngine()
+    lang = input("before starting, give me your language that you want to speak with \n")
+    engine = tts.SpeechEngine(lang)
     chatbot = gpt.ChatGPT()
     conversation_started = False
     while True:
