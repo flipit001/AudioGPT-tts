@@ -11,7 +11,7 @@ if __name__ == "__main__":
         print("listening...")
         voice = engine.get_command(conversation_started)
         conversation_started = True
-        if "stop {engine.identifier}" in voice:
+        if f"stop {engine.identifier}" in voice:
             break
         print(f"you said: {voice}")
         response = chatbot.ask(voice)
